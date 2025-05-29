@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1748553099 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\main.c
+	<stdio.h>
+	<stdlib.h>
+	"raylib.h"
+
