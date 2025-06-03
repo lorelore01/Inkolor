@@ -1,8 +1,8 @@
-// player_system.h
 #ifndef PLAYER_SYSTEM_H
 #define PLAYER_SYSTEM_H
 
-#include "game_state.h"
+// Forward declaration
+typedef struct GameState GameState;
 
 void UpdatePlayer(GameState *state, float delta);
 void InitAttack(GameState *state, char direction);

@@ -1,4 +1,3 @@
-// main.c
 #include "raylib.h"
 #include "game_state.h"
 #include "input_system.h"
@@ -8,19 +7,23 @@
 #include "enemy_system.h"
 #include "upgrade_system.h"
 #include "ui_system.h"
+#include "score_system.h"
 #include <stddef.h>
-
+#include <stdio.h>
+#include <string.h>  // Added for strlen
 
 int main() {
     const int screenWidth = 1600;
     const int screenHeight = 920;
-    InitWindow(screenWidth, screenHeight, "Tela");
+    InitWindow(screenWidth, screenHeight, "Platform Fighter");
     SetTargetFPS(60);
 
     // Initialize game state
     GameState state;
     InitializeGameState(&state, screenWidth, screenHeight);
-    SetGlobalState(&state); // Agora deve funcionar
+
+    // Load scores
+    LoadHighScores(&state);
 
     while (!WindowShouldClose()) {
         float delta = GetFrameTime();
@@ -31,6 +34,7 @@ int main() {
         }
         else if (state.finished) {
             HandleMenuInput(&state, screenWidth);
+            HandleNameInput(&state);
         }
         else {
             if (!state.onUpgradeScreen) {
@@ -48,16 +52,20 @@ int main() {
             UpdatePlayer(&state, delta);
 
             // Enemy systems
-            if (!state.waveStarting && state.enemy.alive) {
-                UpdateEnemy(&state, delta);
+            if (!state.waveStarting && state.enemiesAlive > 0) {
+                UpdateEnemies(&state, delta);
             }
 
             // Collision systems
-            CheckPlayerEnemyCollision(&state);
-            CheckAttackEnemyCollision(&state);
+            CheckPlayerEnemyCollisions(&state);
+            CheckAttackEnemyCollisions(&state);
+            CheckFallingDamage(&state, screenHeight);
+
+            // Projectile system
+            UpdateProjectiles(&state);
 
             // Wave systems
-            if (!state.enemy.alive && !state.waveStarting) {
+            if (state.enemiesDefeated >= state.enemiesAlive && !state.waveStarting) {
                 HandleEnemyDefeat(&state);
             }
 
@@ -91,6 +99,11 @@ int main() {
         }
 
         EndDrawing();
+    }
+
+    // Save scores before closing
+    if (state.finished && !state.nameInputActive && strlen(state.playerName) > 0) {
+        SaveHighScore(state.playerName, state.currentWave);
     }
 
     CloseWindow();

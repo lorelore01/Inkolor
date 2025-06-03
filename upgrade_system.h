@@ -1,15 +1,12 @@
-// upgrade_system.h
 #ifndef UPGRADE_SYSTEM_H
 #define UPGRADE_SYSTEM_H
 
-#include "game_state.h"
-
-// Adicione esta declaração
-void SetGlobalState(GameState* state);
+// Forward declaration
+typedef struct GameState GameState;
 
 void ApplyUpgrade(GameState *state);
-void upgradeAtk(void);
-void upgradeRange(void);
-void upgradeHp(void);
+void upgradeAtk(GameState *state);
+void upgradeRange(GameState *state);
+void upgradeHp(GameState *state);
 
 #endif

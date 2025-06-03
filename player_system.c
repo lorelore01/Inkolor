@@ -1,9 +1,10 @@
-// player_system.c
 #include "player_system.h"
-#include "collision_system.h"
+#include "collision_system.h"  // Include for WrapAroundPlayer
+#include "game_state.h"        // Include for full definition
+#include <string.h>            // Include for strlen in some functions
 
 void ApplyPlayerGravity(GameState *state) {
-    state->vel_y += 1; // gravity
+    state->vel_y += 1;
     state->player.y += state->vel_y;
     WrapAroundPlayer(&state->player, GetScreenWidth());
 }

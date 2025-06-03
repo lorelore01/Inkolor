@@ -1,5 +1,11 @@
-// game_state.c
 #include "game_state.h"
+#include <string.h>
+#include <stdio.h>
+
+// Forward declarations for upgrade functions
+void upgradeAtk(GameState*);
+void upgradeRange(GameState*);
+void upgradeHp(GameState*);
 
 void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
     // Player
@@ -37,8 +43,16 @@ void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
     state->isDashing = false;
     state->dashDirection = ' ';
 
-    // Enemy
-    state->enemy = (Enemy){3, 1, 4, {800, 770, 50, 50}, true, 0, 0};
+    // Enemies
+    for (int i = 0; i < MAX_ENEMIES; i++) {
+        state->enemies[i].alive = false;
+    }
+    state->enemiesAlive = 0;
+
+    // Projectiles
+    for (int i = 0; i < MAX_PROJECTILES; i++) {
+        state->projectiles[i].active = false;
+    }
 
     // Platforms
     state->platform = (Rectangle){50, 820, 1500, 50};
@@ -54,7 +68,6 @@ void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
     // Wave system
     state->currentWave = 1;
     state->enemiesDefeated = 0;
-    state->enemiesPerWave = 1;
     state->waveStartTimer = 0.0f;
     state->waveStarting = true;
 
@@ -63,11 +76,19 @@ void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
     state->selectedUpgrade = -1;
     state->upgradePending = false;
 
-    // Initialize upgrades
-    extern void upgradeAtk();
-    extern void upgradeRange();
-    extern void upgradeHp();
+    // Initialize upgrades with correct signatures
     state->upgrades[0] = (Upgrade){"+1 Dano", upgradeAtk};
     state->upgrades[1] = (Upgrade){"+25 de alcance", upgradeRange};
     state->upgrades[2] = (Upgrade){"+3 de vida", upgradeHp};
+
+    // Player name
+    strcpy(state->playerName, "");
+    state->nameInputActive = false;
+
+    // High scores
+    state->scoreCount = 0;
+    for (int i = 0; i < MAX_SCORES; i++) {
+        strcpy(state->highScores[i].name, "");
+        state->highScores[i].wave = 0;
+    }
 }

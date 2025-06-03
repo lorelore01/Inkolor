@@ -3,6 +3,7 @@
 #include "game_state.h"
 #include "player_system.h"
 #include <math.h>
+#include <string.h>
 
 void HandlePlayerInput(GameState *state) {
     // Movement
@@ -19,7 +20,7 @@ void HandlePlayerInput(GameState *state) {
 
     // Jump
     if (IsKeyPressed(KEY_SPACE) && state->isonGround) {
-        state->vel_y = -25; // jump_power
+        state->vel_y = -25;
     }
 
     // Attacks
@@ -66,7 +67,7 @@ void HandleMenuInput(GameState *state, int screenWidth) {
             state->player.y = state->miniPlatform.y - state->player.height;
             state->vel_y = 0;
         }
-        else if (state->finished) {
+        else if (state->finished && !state->nameInputActive) {
             // Reset game
             state->started = false;
             state->finished = false;
@@ -78,13 +79,36 @@ void HandleMenuInput(GameState *state, int screenWidth) {
             state->player.x = state->miniPlatform.x + (state->miniPlatform.width / 2) - (state->player.width / 2);
             state->player.y = state->miniPlatform.y - state->player.height;
             state->vel_y = 0;
-            state->enemy.alive = true;
-            state->enemy.hp = 3;
-            state->enemy.hitbox.x = 800;
-            state->enemy.hitbox.y = 770;
-            state->enemy.vel_y = 0;
             state->currentWave = 1;
             state->waveStarting = true;
+
+            // Reset enemies
+            for (int i = 0; i < MAX_ENEMIES; i++) {
+                state->enemies[i].alive = false;
+            }
         }
+    }
+}
+
+void HandleNameInput(GameState *state) {
+    if (!state->nameInputActive) return;
+
+    int key = GetCharPressed();
+    while (key > 0) {
+        if ((key >= 32) && (key <= 125) && (strlen(state->playerName) < 49)) {
+            int len = strlen(state->playerName);
+            state->playerName[len] = (char)key;
+            state->playerName[len+1] = '\0';
+        }
+        key = GetCharPressed();
+    }
+
+    if (IsKeyPressed(KEY_BACKSPACE)) {
+        int len = strlen(state->playerName);
+        if (len > 0) state->playerName[len-1] = '\0';
+    }
+
+    if (IsKeyPressed(KEY_ENTER) && strlen(state->playerName) > 0) {
+        state->nameInputActive = false;
     }
 }

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1748981737 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\main.c
+1748982794 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\main.c
 	"raylib.h"
 	"game_state.h"
 	"input_system.h"
@@ -11,47 +11,75 @@
 	"ui_system.h"
 	<stddef.h>
 
-1748981631 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\collision_system.c
+1748982794 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\collision_system.c
 	"collision_system.h"
 	"game_state.h"
 	<math.h>
 
-1748981631 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\collision_system.h
+1748983217 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\collision_system.h
 	"game_state.h"
 
-1748981631 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\game_state.h
+1748984326 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\game_state.h
 	"raylib.h"
+	<stddef.h>
 
-1748981631 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\ui_system.c
+1748983604 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\ui_system.c
 	"ui_system.h"
 	"game_state.h"
 	"raylib.h"
+	<stdio.h>
 
-1748981631 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\ui_system.h
+1748983604 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\ui_system.h
 	"game_state.h"
 
-1748981631 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\wave_system.c
+1748983604 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\wave_system.c
 	"wave_system.h"
+	"enemy_system.h"
 	"upgrade_system.h"
 
-1748981631 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\wave_system.h
+1748983604 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\wave_system.h
 	"game_state.h"
 
-1748981678 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\upgrade_system.h
+1748984104 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\upgrade_system.h
+
+1748983366 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\input_system.h
 	"game_state.h"
 
-1748981631 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\input_system.h
-	"game_state.h"
+1748984104 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\player_system.h
 
-1748981631 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\player_system.h
-	"game_state.h"
+1748984104 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\enemy_system.h
 
-1748981631 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\enemy_system.h
-	"game_state.h"
-
-1748981825 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\upgrade_system.c
+1748984104 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\upgrade_system.c
 	"upgrade_system.h"
 	"game_state.h"
-	<stddef.h>
-	<assert.h>
+
+1748982794 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\enemy_system.c
+	"enemy_system.h"
+	"collision_system.h"
+	<math.h>
+
+1748984104 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\game_state.c
+	"game_state.h"
+	<string.h>
+	<stdio.h>
+
+1748983366 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\input_system.c
+	"input_system.h"
+	"game_state.h"
+	"player_system.h"
+	<math.h>
+	<string.h>
+
+1748982794 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\player_system.c
+	"player_system.h"
+	"collision_system.h"
+
+1748983604 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\score_system.c
+	"score_system.h"
+	"game_state.h"
+	<stdio.h>
+	<string.h>
+
+1748983604 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\score_system.h
+	"game_state.h"
 

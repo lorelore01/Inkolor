@@ -1,8 +1,21 @@
-// game_state.h
 #ifndef GAME_STATE_H
 #define GAME_STATE_H
 
 #include "raylib.h"
+#include <stddef.h>
+
+#define MAX_ENEMIES 10
+#define MAX_PROJECTILES 50
+#define MAX_SCORES 10
+
+// Forward declaration
+typedef struct GameState GameState;
+
+typedef enum {
+    ENEMY_MELEE,
+    ENEMY_RANGED,
+    ENEMY_TANK
+} EnemyType;
 
 typedef struct {
     int hp;
@@ -10,7 +23,9 @@ typedef struct {
     int speed;
 } PlayerStatus;
 
-typedef struct {
+// Define Enemy struct with tag
+typedef struct Enemy {
+    EnemyType type;
     int hp;
     int atk;
     int speed;
@@ -18,14 +33,26 @@ typedef struct {
     bool alive;
     float vel_y;
     float hitCooldownTimer;
+    float shootCooldown;
 } Enemy;
 
 typedef struct {
+    float x, y;
+    float dx, dy;
+    bool active;
+} Projectile;
+
+typedef struct {
     const char* name;
-    void (*apply)(void);
+    void (*apply)(GameState*);
 } Upgrade;
 
 typedef struct {
+    char name[50];
+    int wave;
+} HighScore;
+
+struct GameState {
     // Player
     Rectangle player;
     PlayerStatus playerStatus;
@@ -61,8 +88,12 @@ typedef struct {
     bool isDashing;
     char dashDirection;
 
-    // Enemy
-    Enemy enemy;
+    // Enemies
+    Enemy enemies[MAX_ENEMIES];
+    int enemiesAlive;
+
+    // Projectiles
+    Projectile projectiles[MAX_PROJECTILES];
 
     // Platforms
     Rectangle platform;
@@ -78,7 +109,6 @@ typedef struct {
     // Wave system
     int currentWave;
     int enemiesDefeated;
-    int enemiesPerWave;
     float waveStartTimer;
     bool waveStarting;
 
@@ -87,7 +117,15 @@ typedef struct {
     int selectedUpgrade;
     bool upgradePending;
     Upgrade upgrades[3];
-} GameState;
+
+    // Player name
+    char playerName[50];
+    bool nameInputActive;
+
+    // High scores
+    HighScore highScores[MAX_SCORES];
+    int scoreCount;
+};
 
 void InitializeGameState(GameState *state, int screenWidth, int screenHeight);
 

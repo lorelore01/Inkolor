@@ -7,5 +7,6 @@
 void HandlePlayerInput(GameState *state);
 void HandleUpgradeInput(GameState *state);
 void HandleMenuInput(GameState *state, int screenWidth);
+void HandleNameInput(GameState *state);
 
 #endif

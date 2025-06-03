@@ -2,6 +2,7 @@
 #include "ui_system.h"
 #include "game_state.h"
 #include "raylib.h"
+#include <stdio.h>
 
 void DrawCooldownBar(int x, int y, int width, int height, float cooldownTimer, float cooldownMax, Color color) {
     float percent = 1.0f;
@@ -24,14 +25,20 @@ void DrawGameUI(const GameState *state) {
     DrawRectangle(barX, barY, hpWidth, barHeight, RED);
     DrawText(TextFormat("HP: %d / 10", state->playerStatus.hp), barX, barY - 25, 20, WHITE);
 
-    // Enemy HP bar
-    if (state->enemy.alive) {
+    // Enemy HP bars
+    for (int i = 0; i < MAX_ENEMIES; i++) {
+        if (!state->enemies[i].alive) continue;
+
         int enemyHpMax = 3;
-        int enemyBarWidth = (int)(state->enemy.hitbox.width * ((float)state->enemy.hp / enemyHpMax));
-        DrawRectangle((int)state->enemy.hitbox.x, (int)(state->enemy.hitbox.y + state->enemy.hitbox.height + 5),
+        if (state->enemies[i].type == ENEMY_TANK) enemyHpMax = 10;
+
+        int enemyBarWidth = (int)(state->enemies[i].hitbox.width * ((float)state->enemies[i].hp / enemyHpMax));
+        DrawRectangle((int)state->enemies[i].hitbox.x,
+                     (int)(state->enemies[i].hitbox.y + state->enemies[i].hitbox.height + 5),
                      enemyBarWidth, 5, RED);
-        DrawRectangleLines((int)state->enemy.hitbox.x, (int)(state->enemy.hitbox.y + state->enemy.hitbox.height + 5),
-                          (int)state->enemy.hitbox.width, 5, BLACK);
+        DrawRectangleLines((int)state->enemies[i].hitbox.x,
+                          (int)(state->enemies[i].hitbox.y + state->enemies[i].hitbox.height + 5),
+                          (int)state->enemies[i].hitbox.width, 5, BLACK);
     }
 
     // Cooldown bars
@@ -62,24 +69,47 @@ void DrawGameUI(const GameState *state) {
 }
 
 void DrawMenuScreen(const GameState *state, int screenWidth, int screenHeight) {
-    DrawText("Aperte [Enter] para iniciar", screenWidth / 4, screenHeight / 2, 50, WHITE);
+    DrawText("Platform Fighter", screenWidth/2 - 150, screenHeight/4, 50, WHITE);
+    DrawText("Aperte [Enter] para iniciar", screenWidth/3, screenHeight/2, 40, WHITE);
+
+    // Show high scores
+    if (state->scoreCount > 0) {
+        DrawText("Melhores Pontuacoes:", screenWidth/3, screenHeight/2 + 100, 30, GOLD);
+        for (int i = 0; i < state->scoreCount && i < 5; i++) {
+            DrawText(TextFormat("%s: Wave %d",
+                    state->highScores[i].name,
+                    state->highScores[i].wave),
+                    screenWidth/3, screenHeight/2 + 140 + i * 30, 25, WHITE);
+        }
+    }
 }
 
 void DrawGameOverScreen(const GameState *state, int screenWidth, int screenHeight) {
     if (state->death == 1) {
-        DrawText("Voce Venceu :)", screenWidth / 4, screenHeight / 2, 50, WHITE);
+        DrawText("Voce Venceu :)", screenWidth/3, screenHeight/3, 50, GREEN);
     }
     else if (state->death == 2) {
-        DrawText("Voce Perdeu :(", screenWidth / 4, screenHeight / 2, 50, WHITE);
+        DrawText("Voce Perdeu :(", screenWidth/3, screenHeight/3, 50, RED);
     }
-    DrawText("Aperte [Enter] para retornar ao menu", screenWidth / 4, screenHeight / 2 + 60, 30, WHITE);
+
+    DrawText(TextFormat("Wave Alcancada: %d", state->currentWave),
+             screenWidth/3, screenHeight/2, 40, WHITE);
+
+    if (state->nameInputActive) {
+        DrawText("Digite seu nome:", screenWidth/3, screenHeight/2 + 100, 30, WHITE);
+        DrawText(state->playerName, screenWidth/3, screenHeight/2 + 140, 30, YELLOW);
+        DrawText("Aperte [Enter] quando terminar", screenWidth/3, screenHeight/2 + 180, 25, WHITE);
+    }
+    else {
+        DrawText("Aperte [Enter] para retornar ao menu", screenWidth/3, screenHeight/2 + 100, 30, WHITE);
+    }
 }
 
 void DrawUpgradeScreen(const GameState *state, int screenWidth, int screenHeight) {
-    DrawText("Escolha um upgrade:", screenWidth / 4, screenHeight / 4, 40, WHITE);
+    DrawText("Escolha um upgrade:", screenWidth/3, screenHeight/4, 40, WHITE);
     for (int i = 0; i < 3; i++) {
         DrawText(TextFormat("%d - %s", i + 1, state->upgrades[i].name),
-                 screenWidth / 4, screenHeight / 3 + i * 50, 30, GREEN);
+                 screenWidth/3, screenHeight/3 + i * 50, 30, GREEN);
     }
 }
 
@@ -102,8 +132,23 @@ void DrawGameWorld(const GameState *state) {
         DrawRectangleRec(state->player, PURPLE);
     }
 
-    // Enemy
-    if (state->enemy.alive) DrawRectangleRec(state->enemy.hitbox, YELLOW);
+    // Enemies
+    for (int i = 0; i < MAX_ENEMIES; i++) {
+        if (!state->enemies[i].alive) continue;
+
+        Color enemyColor = YELLOW;
+        if (state->enemies[i].type == ENEMY_RANGED) enemyColor = BLUE;
+        else if (state->enemies[i].type == ENEMY_TANK) enemyColor = RED;
+
+        DrawRectangleRec(state->enemies[i].hitbox, enemyColor);
+    }
+
+    // Projectiles
+    for (int i = 0; i < MAX_PROJECTILES; i++) {
+        if (state->projectiles[i].active) {
+            DrawCircle(state->projectiles[i].x, state->projectiles[i].y, 5, BLUE);
+        }
+    }
 
     // Attack
     if (state->isAttacking) DrawRectangleRec(state->attack, RED);
