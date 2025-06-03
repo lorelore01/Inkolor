@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1748982794 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\main.c
+1748984326 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\main.c
 	"raylib.h"
 	"game_state.h"
 	"input_system.h"
@@ -9,15 +9,19 @@
 	"enemy_system.h"
 	"upgrade_system.h"
 	"ui_system.h"
+	"score_system.h"
 	<stddef.h>
+	<stdio.h>
+	<string.h>
 
-1748982794 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\collision_system.c
+1748984104 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\collision_system.c
 	"collision_system.h"
 	"game_state.h"
 	<math.h>
+	<string.h>
 
-1748983217 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\collision_system.h
-	"game_state.h"
+1748984192 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\collision_system.h
+	"raylib.h"
 
 1748984326 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\game_state.h
 	"raylib.h"
@@ -53,10 +57,12 @@
 	"upgrade_system.h"
 	"game_state.h"
 
-1748982794 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\enemy_system.c
+1748984326 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\enemy_system.c
 	"enemy_system.h"
 	"collision_system.h"
+	"game_state.h"
 	<math.h>
+	<stdlib.h>
 
 1748984104 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\game_state.c
 	"game_state.h"
@@ -70,9 +76,11 @@
 	<math.h>
 	<string.h>
 
-1748982794 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\player_system.c
+1748984326 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\player_system.c
 	"player_system.h"
 	"collision_system.h"
+	"game_state.h"
+	<string.h>
 
 1748983604 source:c:\users\loren.desktop-6u1ivbi\desktop\inkolor\score_system.c
 	"score_system.h"
