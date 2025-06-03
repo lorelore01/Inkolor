@@ -14,5 +14,7 @@ void CheckPlayerEnemyCollisions(GameState *state);
 void CheckAttackEnemyCollisions(GameState *state);
 void CheckFallingDamage(GameState *state, int screenHeight);
 void RespawnPlayer(GameState *state);
+void CheckPlayerItemCollisions(GameState *state);
+void CheckParryProjectileCollisions(GameState *state);
 
 #endif

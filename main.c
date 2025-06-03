@@ -10,13 +10,16 @@
 #include "score_system.h"
 #include <stddef.h>
 #include <stdio.h>
-#include <string.h>  // Added for strlen
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main() {
     const int screenWidth = 1600;
     const int screenHeight = 920;
     InitWindow(screenWidth, screenHeight, "Platform Fighter");
     SetTargetFPS(60);
+    srand(time(NULL)); // Seed para números aleatórios
 
     // Initialize game state
     GameState state;
@@ -60,9 +63,14 @@ int main() {
             CheckPlayerEnemyCollisions(&state);
             CheckAttackEnemyCollisions(&state);
             CheckFallingDamage(&state, screenHeight);
+            CheckParryProjectileCollisions(&state);
+            CheckPlayerItemCollisions(&state);
 
             // Projectile system
             UpdateProjectiles(&state);
+
+            // Item system
+            UpdateItems(&state, delta);
 
             // Wave systems
             if (state.enemiesDefeated >= state.enemiesAlive && !state.waveStarting) {

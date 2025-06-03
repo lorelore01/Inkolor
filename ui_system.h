@@ -1,4 +1,3 @@
-// ui_system.h
 #ifndef UI_SYSTEM_H
 #define UI_SYSTEM_H
 

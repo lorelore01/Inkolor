@@ -1,7 +1,7 @@
 #include "player_system.h"
-#include "collision_system.h"  // Include for WrapAroundPlayer
-#include "game_state.h"        // Include for full definition
-#include <string.h>            // Include for strlen in some functions
+#include "collision_system.h"
+#include "game_state.h"
+#include <string.h>
 
 void ApplyPlayerGravity(GameState *state) {
     state->vel_y += 1;
@@ -34,6 +34,14 @@ void UpdatePlayer(GameState *state, float delta) {
 
     state->playerInvincibleTimer -= delta;
     if (state->playerInvincibleTimer < 0) state->playerInvincibleTimer = 0;
+
+    // Speed effect timer
+    if (state->playerStatus.speedTimer > 0) {
+        state->playerStatus.speedTimer -= delta;
+        if (state->playerStatus.speedTimer <= 0) {
+            state->playerStatus.speed = state->playerStatus.originalSpeed;
+        }
+    }
 
     // Dash update
     if (state->isDashing) {

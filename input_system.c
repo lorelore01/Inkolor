@@ -1,4 +1,3 @@
-// input_system.c
 #include "input_system.h"
 #include "game_state.h"
 #include "player_system.h"

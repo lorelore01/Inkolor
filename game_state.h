@@ -7,6 +7,7 @@
 #define MAX_ENEMIES 10
 #define MAX_PROJECTILES 50
 #define MAX_SCORES 10
+#define MAX_ITEMS 10
 
 // Forward declaration
 typedef struct GameState GameState;
@@ -17,10 +18,18 @@ typedef enum {
     ENEMY_TANK
 } EnemyType;
 
+typedef enum {
+    ITEM_NONE,
+    ITEM_HEALTH,
+    ITEM_SPEED
+} ItemType;
+
 typedef struct {
     int hp;
     int atk;
     int speed;
+    float speedTimer; // Timer para efeito de velocidade
+    int originalSpeed; // Velocidade original
 } PlayerStatus;
 
 // Define Enemy struct with tag
@@ -40,7 +49,15 @@ typedef struct {
     float x, y;
     float dx, dy;
     bool active;
+    bool deflected; // Indica se foi defletido pelo parry
 } Projectile;
+
+typedef struct {
+    ItemType type;
+    Rectangle hitbox;
+    bool active;
+    float lifeTimer;
+} Item;
 
 typedef struct {
     const char* name;
@@ -94,6 +111,9 @@ struct GameState {
 
     // Projectiles
     Projectile projectiles[MAX_PROJECTILES];
+
+    // Items
+    Item items[MAX_ITEMS];
 
     // Platforms
     Rectangle platform;

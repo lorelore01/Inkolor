@@ -10,7 +10,11 @@ void upgradeHp(GameState*);
 void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
     // Player
     state->player = (Rectangle){100, 500, 50, 50};
-    state->playerStatus = (PlayerStatus){10, 1, 5};
+    state->playerStatus.hp = 10;
+    state->playerStatus.atk = 1;
+    state->playerStatus.speed = 5;
+    state->playerStatus.speedTimer = 0.0f;
+    state->playerStatus.originalSpeed = 5;
     state->vel_y = 0;
     state->isonGround = false;
     state->playerInvincibleTimer = 0;
@@ -52,6 +56,12 @@ void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
     // Projectiles
     for (int i = 0; i < MAX_PROJECTILES; i++) {
         state->projectiles[i].active = false;
+    }
+
+    // Items
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        state->items[i].active = false;
+        state->items[i].type = ITEM_NONE;
     }
 
     // Platforms

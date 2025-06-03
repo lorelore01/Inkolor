@@ -1,4 +1,3 @@
-// input_system.h
 #ifndef INPUT_SYSTEM_H
 #define INPUT_SYSTEM_H
 

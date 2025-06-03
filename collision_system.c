@@ -1,7 +1,8 @@
 #include "collision_system.h"
-#include "game_state.h"  // Include for full definition
+#include "game_state.h"
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 
 void WrapAroundPlayer(Rectangle *player, int screenWidth) {
     if (player->x + player->width < 0) player->x = screenWidth;
@@ -97,6 +98,23 @@ void CheckAttackEnemyCollisions(GameState *state) {
                 if (state->enemies[i].hp <= 0) {
                     state->enemies[i].alive = false;
                     state->enemiesDefeated++;
+
+                    // 20% chance to drop an item
+                    if (rand() % 100 < 20) {
+                        for (int j = 0; j < MAX_ITEMS; j++) {
+                            if (!state->items[j].active) {
+                                state->items[j].active = true;
+                                state->items[j].hitbox = (Rectangle){
+                                    state->enemies[i].hitbox.x,
+                                    state->enemies[i].hitbox.y,
+                                    20, 20
+                                };
+                                state->items[j].lifeTimer = 10.0f;
+                                state->items[j].type = (rand() % 2) + 1; // 1=HEALTH, 2=SPEED
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -120,4 +138,50 @@ void RespawnPlayer(GameState *state) {
     state->player.x = state->miniPlatform.x + (state->miniPlatform.width - state->player.width) / 2;
     state->player.y = state->miniPlatform.y - state->player.height;
     state->vel_y = 0;
+}
+
+void CheckPlayerItemCollisions(GameState *state) {
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        if (!state->items[i].active) continue;
+
+        if (CheckCollisionRecs(state->player, state->items[i].hitbox)) {
+            switch (state->items[i].type) {
+                case ITEM_HEALTH:
+                    state->playerStatus.hp += 2;
+                    if (state->playerStatus.hp > 10) state->playerStatus.hp = 10;
+                    break;
+
+                case ITEM_SPEED:
+                    if (state->playerStatus.speedTimer <= 0) {
+                        state->playerStatus.originalSpeed = state->playerStatus.speed;
+                    }
+                    state->playerStatus.speed = state->playerStatus.originalSpeed + 2;
+                    state->playerStatus.speedTimer = 10.0f; // 10 seconds
+                    break;
+            }
+            state->items[i].active = false;
+        }
+    }
+}
+
+void CheckParryProjectileCollisions(GameState *state) {
+    if (!state->isParrying) return;
+
+    float parryRadius = state->player.width / 2 + 15;
+    Vector2 playerCenter = {
+        state->player.x + state->player.width/2,
+        state->player.y + state->player.height/2
+    };
+
+    for (int i = 0; i < MAX_PROJECTILES; i++) {
+        if (!state->projectiles[i].active) continue;
+
+        Vector2 projPos = { state->projectiles[i].x, state->projectiles[i].y };
+        if (CheckCollisionPointCircle(projPos, playerCenter, parryRadius)) {
+            // Deflect projectile
+            state->projectiles[i].dx = -state->projectiles[i].dx;
+            state->projectiles[i].dy = -state->projectiles[i].dy;
+            state->projectiles[i].deflected = true;
+        }
+    }
 }

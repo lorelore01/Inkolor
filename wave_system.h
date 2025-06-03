@@ -1,4 +1,3 @@
-// wave_system.h
 #ifndef WAVE_SYSTEM_H
 #define WAVE_SYSTEM_H
 

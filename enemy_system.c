@@ -46,12 +46,13 @@ void UpdateEnemies(GameState *state, float delta) {
                 for (int j = 0; j < MAX_PROJECTILES; j++) {
                     if (!state->projectiles[j].active) {
                         state->projectiles[j].active = true;
-                        state->projectiles[j].x = state->enemies[i].hitbox.x;
-                        state->projectiles[j].y = state->enemies[i].hitbox.y;
+                        state->projectiles[j].x = state->enemies[i].hitbox.x + state->enemies[i].hitbox.width/2;
+                        state->projectiles[j].y = state->enemies[i].hitbox.y + state->enemies[i].hitbox.height/2;
+                        state->projectiles[j].deflected = false;
 
                         // Calculate direction to player
-                        float dx = state->player.x - state->enemies[i].hitbox.x;
-                        float dy = state->player.y - state->enemies[i].hitbox.y;
+                        float dx = state->player.x - state->projectiles[j].x;
+                        float dy = state->player.y - state->projectiles[j].y;
                         float length = sqrtf(dx*dx + dy*dy);
 
                         state->projectiles[j].dx = dx/length * 5;

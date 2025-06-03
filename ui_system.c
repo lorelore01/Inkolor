@@ -1,4 +1,3 @@
-// ui_system.c
 #include "ui_system.h"
 #include "game_state.h"
 #include "raylib.h"
@@ -33,11 +32,9 @@ void DrawGameUI(const GameState *state) {
         if (state->enemies[i].type == ENEMY_TANK) enemyHpMax = 10;
 
         int enemyBarWidth = (int)(state->enemies[i].hitbox.width * ((float)state->enemies[i].hp / enemyHpMax));
-        DrawRectangle((int)state->enemies[i].hitbox.x,
-                     (int)(state->enemies[i].hitbox.y + state->enemies[i].hitbox.height + 5),
+        DrawRectangle((int)state->enemies[i].hitbox.x, (int)(state->enemies[i].hitbox.y + state->enemies[i].hitbox.height + 5),
                      enemyBarWidth, 5, RED);
-        DrawRectangleLines((int)state->enemies[i].hitbox.x,
-                          (int)(state->enemies[i].hitbox.y + state->enemies[i].hitbox.height + 5),
+        DrawRectangleLines((int)state->enemies[i].hitbox.x, (int)(state->enemies[i].hitbox.y + state->enemies[i].hitbox.height + 5),
                           (int)state->enemies[i].hitbox.width, 5, BLACK);
     }
 
@@ -65,6 +62,12 @@ void DrawGameUI(const GameState *state) {
     if (state->waveStarting) {
         DrawText(TextFormat("Wave %d em:%.1f", state->currentWave, state->waveStartTimer),
                 GetScreenWidth() - 235, 75, 30, WHITE);
+    }
+
+    // Draw speed effect timer
+    if (state->playerStatus.speedTimer > 0) {
+        DrawText(TextFormat("SPEED BOOST: %.1f", state->playerStatus.speedTimer),
+                GetScreenWidth() - 250, 100, 20, YELLOW);
     }
 }
 
@@ -102,6 +105,15 @@ void DrawGameOverScreen(const GameState *state, int screenWidth, int screenHeigh
     }
     else {
         DrawText("Aperte [Enter] para retornar ao menu", screenWidth/3, screenHeight/2 + 100, 30, WHITE);
+
+        // Show high scores
+        DrawText("High Scores:", screenWidth/3, screenHeight/2 + 150, 30, GOLD);
+        for (int i = 0; i < state->scoreCount && i < 5; i++) {
+            DrawText(TextFormat("%s: Wave %d",
+                    state->highScores[i].name,
+                    state->highScores[i].wave),
+                    screenWidth/3, screenHeight/2 + 190 + i * 30, 25, WHITE);
+        }
     }
 }
 
@@ -146,7 +158,21 @@ void DrawGameWorld(const GameState *state) {
     // Projectiles
     for (int i = 0; i < MAX_PROJECTILES; i++) {
         if (state->projectiles[i].active) {
-            DrawCircle(state->projectiles[i].x, state->projectiles[i].y, 5, BLUE);
+            Color color = state->projectiles[i].deflected ? GREEN : BLUE;
+            DrawCircle(state->projectiles[i].x, state->projectiles[i].y, 5, color);
+        }
+    }
+
+    // Items
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        if (!state->items[i].active) continue;
+
+        if (state->items[i].type == ITEM_HEALTH) {
+            DrawRectangleRec(state->items[i].hitbox, GREEN);
+            DrawText("HP", state->items[i].hitbox.x, state->items[i].hitbox.y, 10, BLACK);
+        } else if (state->items[i].type == ITEM_SPEED) {
+            DrawRectangleRec(state->items[i].hitbox, YELLOW);
+            DrawText("SPD", state->items[i].hitbox.x, state->items[i].hitbox.y, 10, BLACK);
         }
     }
 

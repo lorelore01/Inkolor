@@ -1,4 +1,3 @@
-// score_system.h
 #ifndef SCORE_SYSTEM_H
 #define SCORE_SYSTEM_H
 
@@ -7,5 +6,6 @@
 void SaveHighScore(const char* name, int wave);
 void LoadHighScores(GameState *state);
 void UpdateProjectiles(GameState *state);
+void UpdateItems(GameState *state, float delta);
 
 #endif

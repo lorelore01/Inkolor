@@ -1,4 +1,3 @@
-// wave_system.c
 #include "wave_system.h"
 #include "enemy_system.h"
 #include "upgrade_system.h"
