@@ -31,9 +31,42 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="README.md" />
+		<Unit filename="collision_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="collision_system.h" />
+		<Unit filename="enemy_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="enemy_system.h" />
+		<Unit filename="game_state.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="game_state.h" />
+		<Unit filename="input_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="input_system.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="player_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="player_system.h" />
+		<Unit filename="ui_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_system.h" />
+		<Unit filename="upgrade_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="upgrade_system.h" />
+		<Unit filename="wave_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="wave_system.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
