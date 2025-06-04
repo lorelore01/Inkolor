@@ -55,6 +55,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="player_system.h" />
+		<Unit filename="score_system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="score_system.h" />
 		<Unit filename="ui_system.c">
 			<Option compilerVar="CC" />
 		</Unit>

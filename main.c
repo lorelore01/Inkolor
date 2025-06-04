@@ -17,7 +17,7 @@
 int main() {
     const int screenWidth = 1600;
     const int screenHeight = 920;
-    InitWindow(screenWidth, screenHeight, "Platform Fighter");
+    InitWindow(screenWidth, screenHeight, "Inkolor: Platform Fighter");
     SetTargetFPS(60);
     srand(time(NULL)); // Seed para números aleatórios
 

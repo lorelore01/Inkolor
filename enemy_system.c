@@ -49,7 +49,12 @@ void UpdateEnemies(GameState *state, float delta) {
                         state->projectiles[j].x = state->enemies[i].hitbox.x + state->enemies[i].hitbox.width/2;
                         state->projectiles[j].y = state->enemies[i].hitbox.y + state->enemies[i].hitbox.height/2;
                         state->projectiles[j].deflected = false;
-
+                        // Kill enemy if it falls below the screen
+                        if (state->enemies[i].hitbox.y > GetScreenHeight()) {
+                            state->enemies[i].alive = false;
+                            state->enemiesAlive--;
+                            state->enemiesDefeated++;
+                        }
                         // Calculate direction to player
                         float dx = state->player.x - state->projectiles[j].x;
                         float dy = state->player.y - state->projectiles[j].y;

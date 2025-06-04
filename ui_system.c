@@ -72,7 +72,7 @@ void DrawGameUI(const GameState *state) {
 }
 
 void DrawMenuScreen(const GameState *state, int screenWidth, int screenHeight) {
-    DrawText("Platform Fighter", screenWidth/2 - 150, screenHeight/4, 50, WHITE);
+    DrawText("Inkolor: Platform Fighter", screenWidth/2 - 150, screenHeight/4, 50, WHITE);
     DrawText("Aperte [Enter] para iniciar", screenWidth/3, screenHeight/2, 40, WHITE);
 
     // Show high scores
