@@ -56,20 +56,19 @@ void UpdateEnemies(GameState *state, float delta) {
 }
 
 void SpawnEnemyWave(GameState *state) {
+    int screenWidth = GetScreenWidth();
     int enemiesToSpawn = state->currentWave + 1;
     if (enemiesToSpawn > MAX_ENEMIES) enemiesToSpawn = MAX_ENEMIES;
 
     for (int i = 0; i < enemiesToSpawn; i++) {
         state->enemies[i].alive = true;
 
-        // Determine enemy type based on wave
         if (state->currentWave < 3) {
             state->enemies[i].type = ENEMY_MELEE;
         } else {
             state->enemies[i].type = (rand() % 100 < 70) ? ENEMY_MELEE : ENEMY_RANGED;
         }
 
-        // Set stats based on type and wave
         switch (state->enemies[i].type) {
             case ENEMY_MELEE:
                 state->enemies[i].hp = 2 + (state->currentWave / 2);
@@ -84,9 +83,14 @@ void SpawnEnemyWave(GameState *state) {
                 break;
         }
 
-        // Position enemies
-        state->enemies[i].hitbox.x = 300 + i * 200;
+        float xSpacing = (screenWidth - 600) / (enemiesToSpawn - 1);
+        state->enemies[i].hitbox.x = 300 + (i * xSpacing);
         state->enemies[i].hitbox.y = 770;
+
+        if (state->enemies[i].hitbox.x < 50) state->enemies[i].hitbox.x = 50;
+        if (state->enemies[i].hitbox.x > screenWidth - 100)
+            state->enemies[i].hitbox.x = screenWidth - 100;
+
         state->enemies[i].hitbox.width = 50;
         state->enemies[i].hitbox.height = 50;
         state->enemies[i].vel_y = 0;
@@ -97,17 +101,16 @@ void SpawnEnemyWave(GameState *state) {
     state->enemiesDefeated = 0;
 }
 
+
 void UpdateProjectiles(GameState *state) {
     for (int i = 0; i < MAX_PROJECTILES; i++) {
         if (!state->projectiles[i].active) continue;
 
-        // Update position
         state->projectiles[i].x += state->projectiles[i].dx;
         state->projectiles[i].y += state->projectiles[i].dy;
 
-        // Check collision with player
         if (CheckCollisionPointRec((Vector2){state->projectiles[i].x, state->projectiles[i].y},
-                                 state->player) &&
+                                   state->player) &&
             state->playerInvincibleTimer <= 0) {
             state->playerStatus.hp--;
             state->playerInvincibleTimer = 1.0f;
@@ -117,12 +120,26 @@ void UpdateProjectiles(GameState *state) {
                 state->finished = true;
                 state->death = 2;
             }
+            continue;
         }
 
-        // Check if out of screen
+
+        if (state->projectiles[i].deflected) {
+            for (int j = 0; j < MAX_ENEMIES; j++) {
+                if (state->enemies[j].alive &&
+                    CheckCollisionPointRec((Vector2){state->projectiles[i].x, state->projectiles[i].y},
+                                           state->enemies[j].hitbox)) {
+                    state->enemies[j].hp -= 1;
+                    state->projectiles[i].active = false;
+                    break;
+                }
+            }
+        }
+
         if (state->projectiles[i].x < 0 || state->projectiles[i].x > GetScreenWidth() ||
             state->projectiles[i].y < 0 || state->projectiles[i].y > GetScreenHeight()) {
             state->projectiles[i].active = false;
         }
     }
 }
+

@@ -35,6 +35,7 @@ typedef struct {
 typedef struct Enemy {
     EnemyType type;
     int hp;
+    int maxHp; // Adicionado: HP máximo para barra de vida
     int atk;
     int speed;
     Rectangle hitbox;

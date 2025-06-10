@@ -88,30 +88,35 @@ void CheckAttackEnemyCollisions(GameState *state) {
     for (int i = 0; i < MAX_ENEMIES; i++) {
         if (!state->enemies[i].alive) continue;
 
-        if (CheckCollisionRecs(state->attack, state->enemies[i].hitbox)) {
+        // Adicionar verificação de cooldown
+        if (state->enemies[i].hitCooldownTimer <= 0 &&
+            CheckCollisionRecs(state->attack, state->enemies[i].hitbox)) {
+
+            // Knockback vertical ao atacar de cima
             if (state->attackDirection == 'K') state->vel_y = -12.5f;
 
-            if (state->enemies[i].hitCooldownTimer == 0) {
-                state->enemies[i].hp -= state->playerStatus.atk;
-                state->enemies[i].hitCooldownTimer = 0.3f;
+            // Aplicar dano
+            state->enemies[i].hp -= state->playerStatus.atk;
+            state->enemies[i].hitCooldownTimer = 0.3f;
 
-                if (state->enemies[i].hp <= 0) {
-                    state->enemies[i].alive = false;
-                    state->enemiesDefeated++;
+            // Verificar se o inimigo morreu
+            if (state->enemies[i].hp <= 0) {
+                state->enemies[i].alive = false;
+                state->enemiesDefeated++;
 
-                    if (rand() % 100 < 20) {
-                        for (int j = 0; j < MAX_ITEMS; j++) {
-                            if (!state->items[j].active) {
-                                state->items[j].active = true;
-                                state->items[j].hitbox = (Rectangle){
-                                    state->enemies[i].hitbox.x,
-                                    state->enemies[i].hitbox.y,
-                                    20, 20
-                                };
-                                state->items[j].lifeTimer = 10.0f;
-                                state->items[j].type = (rand() % 2) + 1; // 1=HEALTH, 2=SPEED
-                                break;
-                            }
+                // Drop de item com 20% de chance
+                if (rand() % 100 < 20) {
+                    for (int j = 0; j < MAX_ITEMS; j++) {
+                        if (!state->items[j].active) {
+                            state->items[j].active = true;
+                            state->items[j].hitbox = (Rectangle){
+                                state->enemies[i].hitbox.x,
+                                state->enemies[i].hitbox.y,
+                                20, 20
+                            };
+                            state->items[j].lifeTimer = 10.0f;
+                            state->items[j].type = (rand() % 2) + 1; // 1=HEALTH, 2=SPEED
+                            break;
                         }
                     }
                 }
