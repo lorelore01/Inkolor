@@ -5,7 +5,6 @@
 #include <string.h>
 
 void HandlePlayerInput(GameState *state) {
-    // Movement
     if (!state->isDashing) {
         if (IsKeyDown(KEY_A)) {
             state->player.x -= state->playerStatus.speed;
@@ -17,12 +16,10 @@ void HandlePlayerInput(GameState *state) {
         }
     }
 
-    // Jump
     if (IsKeyPressed(KEY_SPACE) && state->isonGround) {
         state->vel_y = -25;
     }
 
-    // Attacks
     if (state->attackCooldownTimer <= 0) {
         if (IsKeyPressed(KEY_J)) {
             InitAttack(state, 'J');
@@ -38,12 +35,10 @@ void HandlePlayerInput(GameState *state) {
         }
     }
 
-    // Dash
     if (IsKeyPressed(KEY_O) && state->dashCooldownTimer <= 0 && !state->isDashing) {
         InitDash(state);
     }
 
-    // Parry
     if (IsKeyPressed(KEY_U) && state->parryCooldownTimer <= 0) {
         InitParry(state);
     }

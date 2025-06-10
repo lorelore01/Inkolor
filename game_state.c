@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdio.h>
 
-// Forward declarations for upgrade functions
 void upgradeAtk(GameState*);
 void upgradeRange(GameState*);
 void upgradeHp(GameState*);
@@ -64,8 +63,9 @@ void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
         state->items[i].type = ITEM_NONE;
     }
 
+
     // Platforms
-    state->platform = (Rectangle){50, 820, 1500, 50};
+    state->platform = (Rectangle){-100, 820, 1700, 50};
     state->miniPlatform = (Rectangle){screenWidth / 2 - 75, 525, 150, 20};
     state->platformLeft = (Rectangle){100, 525, 300, 20};
     state->platformRight = (Rectangle){1200, 525, 300, 20};
@@ -100,5 +100,16 @@ void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
     for (int i = 0; i < MAX_SCORES; i++) {
         strcpy(state->highScores[i].name, "");
         state->highScores[i].wave = 0;
+    }
+}
+
+void UpdateItems(GameState *state, float delta) {
+    for (int i = 0; i < MAX_ITEMS; i++) {
+        if (!state->items[i].active) continue;
+
+        state->items[i].lifeTimer -= delta;
+        if (state->items[i].lifeTimer <= 0) {
+            state->items[i].active = false;
+        }
     }
 }

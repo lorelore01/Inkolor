@@ -19,19 +19,16 @@ int main() {
     const int screenHeight = 920;
     InitWindow(screenWidth, screenHeight, "Inkolor: Platform Fighter");
     SetTargetFPS(60);
-    srand(time(NULL)); // Seed para números aleatórios
+    srand(time(NULL)); // Seed for random numbers
 
-    // Initialize game state
     GameState state;
     InitializeGameState(&state, screenWidth, screenHeight);
 
-    // Load scores
     LoadHighScores(&state);
 
     while (!WindowShouldClose()) {
         float delta = GetFrameTime();
 
-        // Input handling
         if (!state.started) {
             HandleMenuInput(&state, screenWidth);
         }

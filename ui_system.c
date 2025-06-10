@@ -64,7 +64,7 @@ void DrawGameUI(const GameState *state) {
                 GetScreenWidth() - 235, 75, 30, WHITE);
     }
 
-    // Draw speed effect timer
+    // Draw speed(power-up) effect timer
     if (state->playerStatus.speedTimer > 0) {
         DrawText(TextFormat("SPEED BOOST: %.1f", state->playerStatus.speedTimer),
                 GetScreenWidth() - 250, 100, 20, YELLOW);
@@ -72,7 +72,7 @@ void DrawGameUI(const GameState *state) {
 }
 
 void DrawMenuScreen(const GameState *state, int screenWidth, int screenHeight) {
-    DrawText("Inkolor: Platform Fighter", screenWidth/2 - 150, screenHeight/4, 50, WHITE);
+    DrawText("Inkolor: Platform Fighter", screenWidth/3 - 50, screenHeight/4, 50, WHITE);
     DrawText("Aperte [Enter] para iniciar", screenWidth/3, screenHeight/2, 40, WHITE);
 
     // Show high scores
@@ -150,7 +150,6 @@ void DrawGameWorld(const GameState *state) {
 
         Color enemyColor = YELLOW;
         if (state->enemies[i].type == ENEMY_RANGED) enemyColor = BLUE;
-        else if (state->enemies[i].type == ENEMY_TANK) enemyColor = RED;
 
         DrawRectangleRec(state->enemies[i].hitbox, enemyColor);
     }

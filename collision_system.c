@@ -99,7 +99,6 @@ void CheckAttackEnemyCollisions(GameState *state) {
                     state->enemies[i].alive = false;
                     state->enemiesDefeated++;
 
-                    // 20% chance to drop an item
                     if (rand() % 100 < 20) {
                         for (int j = 0; j < MAX_ITEMS; j++) {
                             if (!state->items[j].active) {
@@ -156,7 +155,7 @@ void CheckPlayerItemCollisions(GameState *state) {
                         state->playerStatus.originalSpeed = state->playerStatus.speed;
                     }
                     state->playerStatus.speed = state->playerStatus.originalSpeed + 2;
-                    state->playerStatus.speedTimer = 10.0f; // 10 seconds
+                    state->playerStatus.speedTimer = 10.0f;
                     break;
             }
             state->items[i].active = false;
@@ -178,7 +177,6 @@ void CheckParryProjectileCollisions(GameState *state) {
 
         Vector2 projPos = { state->projectiles[i].x, state->projectiles[i].y };
         if (CheckCollisionPointCircle(projPos, playerCenter, parryRadius)) {
-            // Deflect projectile
             state->projectiles[i].dx = -state->projectiles[i].dx;
             state->projectiles[i].dy = -state->projectiles[i].dy;
             state->projectiles[i].deflected = true;
@@ -191,39 +189,24 @@ void CheckEnemyFallingDamage(GameState *state, int screenHeight) {
         if (!state->enemies[i].alive) continue;
 
         if (state->enemies[i].hitbox.y > screenHeight) {
-            // Apply damage to all enemy types
-            state->enemies[i].hp -= 1;
+            state->enemies[i].hp = 0;
+            state->enemies[i].alive = false;
+            state->enemiesDefeated++;
+            state->enemiesAlive--;
 
-            if (state->enemies[i].hp <= 0) {
-                // Enemy dies from fall damage
-                state->enemies[i].alive = false;
-                state->enemiesDefeated++;
-
-                // Chance to drop item (same as when killed by attack)
-                if (rand() % 100 < 20) {
-                    for (int j = 0; j < MAX_ITEMS; j++) {
-                        if (!state->items[j].active) {
-                            state->items[j].active = true;
-                            state->items[j].hitbox = (Rectangle){
-                                state->enemies[i].hitbox.x,
-                                screenHeight - 50, // Spawn item just above bottom
-                                20, 20
-                            };
-                            state->items[j].lifeTimer = 10.0f;
-                            state->items[j].type = (rand() % 2) + 1;
-                            break;
-                        }
+            if (rand() % 100 < 20) {
+                for (int j = 0; j < MAX_ITEMS; j++) {
+                    if (!state->items[j].active) {
+                        state->items[j].active = true;
+                        state->items[j].hitbox = (Rectangle){
+                            state->enemies[i].hitbox.x,
+                            screenHeight - 50,
+                            20, 20
+                        };
+                        state->items[j].lifeTimer = 10.0f;
+                        state->items[j].type = (rand() % 2) + 1;
+                        break;
                     }
-                }
-            } else {
-                // Reset enemy position if it survives
-                state->enemies[i].hitbox.y = 50; // Top of screen
-                state->enemies[i].hitbox.x = 100 + (rand() % (GetScreenWidth() - 200));
-                state->enemies[i].vel_y = 0;
-
-                // Special reset for ranged enemies
-                if (state->enemies[i].type == ENEMY_RANGED) {
-                    state->enemies[i].shootCooldown = 2.0f; // Reset their shooting cooldown
                 }
             }
         }

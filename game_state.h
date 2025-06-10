@@ -28,11 +28,10 @@ typedef struct {
     int hp;
     int atk;
     int speed;
-    float speedTimer; // Timer para efeito de velocidade
-    int originalSpeed; // Velocidade original
+    float speedTimer; // Timer for speed(Power-UP)
+    int originalSpeed;
 } PlayerStatus;
 
-// Define Enemy struct with tag
 typedef struct Enemy {
     EnemyType type;
     int hp;
@@ -49,7 +48,7 @@ typedef struct {
     float x, y;
     float dx, dy;
     bool active;
-    bool deflected; // Indica se foi defletido pelo parry
+    bool deflected;
 } Projectile;
 
 typedef struct {
@@ -147,6 +146,7 @@ struct GameState {
     int scoreCount;
 };
 
+void UpdateItems(GameState *state, float delta);
 void InitializeGameState(GameState *state, int screenWidth, int screenHeight);
 
 #endif

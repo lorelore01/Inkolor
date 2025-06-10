@@ -10,7 +10,6 @@ void ApplyPlayerGravity(GameState *state) {
 }
 
 void UpdatePlayer(GameState *state, float delta) {
-    // Cooldowns
     state->attackCooldownTimer -= delta;
     if (state->attackCooldownTimer < 0) state->attackCooldownTimer = 0;
 
@@ -35,7 +34,7 @@ void UpdatePlayer(GameState *state, float delta) {
     state->playerInvincibleTimer -= delta;
     if (state->playerInvincibleTimer < 0) state->playerInvincibleTimer = 0;
 
-    // Speed effect timer
+    // Speed(power-up) effect timer
     if (state->playerStatus.speedTimer > 0) {
         state->playerStatus.speedTimer -= delta;
         if (state->playerStatus.speedTimer <= 0) {
@@ -43,7 +42,6 @@ void UpdatePlayer(GameState *state, float delta) {
         }
     }
 
-    // Dash update
     if (state->isDashing) {
         if (state->dashDirection == 'A') state->player.x -= state->dashSpeed;
         else if (state->dashDirection == 'D') state->player.x += state->dashSpeed;

@@ -8,17 +8,14 @@ void UpdateEnemies(GameState *state, float delta) {
     for (int i = 0; i < MAX_ENEMIES; i++) {
         if (!state->enemies[i].alive) continue;
 
-        // Apply gravity
         state->enemies[i].vel_y += 1;
         state->enemies[i].hitbox.y += state->enemies[i].vel_y;
 
-        // Platform collision
         if (CheckCollisionRecs(state->enemies[i].hitbox, state->platform)) {
             state->enemies[i].hitbox.y = state->platform.y - state->enemies[i].hitbox.height;
             state->enemies[i].vel_y = 0;
         }
 
-        // Movement towards player (only for melee enemies)
         if (state->enemies[i].type == ENEMY_MELEE) {
             if (state->enemies[i].hitbox.x < state->player.x) {
                 state->enemies[i].hitbox.x += state->enemies[i].speed;
@@ -27,19 +24,8 @@ void UpdateEnemies(GameState *state, float delta) {
             }
         }
 
-        // Ranged enemy behavior
-        if (state->enemies[i].type == ENEMY_RANGED) {
-            // Keep distance from player
-            float dist = fabsf(state->player.x - state->enemies[i].hitbox.x);
-            if (dist < 300) {
-                if (state->player.x < state->enemies[i].hitbox.x) {
-                    state->enemies[i].hitbox.x += 2;
-                } else {
-                    state->enemies[i].hitbox.x -= 2;
-                }
-            }
 
-            // Shoot projectiles
+        if (state->enemies[i].type == ENEMY_RANGED) {
             state->enemies[i].shootCooldown -= delta;
             if (state->enemies[i].shootCooldown <= 0) {
                 // Create projectile
@@ -49,12 +35,6 @@ void UpdateEnemies(GameState *state, float delta) {
                         state->projectiles[j].x = state->enemies[i].hitbox.x + state->enemies[i].hitbox.width/2;
                         state->projectiles[j].y = state->enemies[i].hitbox.y + state->enemies[i].hitbox.height/2;
                         state->projectiles[j].deflected = false;
-                        // Kill enemy if it falls below the screen
-                        if (state->enemies[i].hitbox.y > GetScreenHeight()) {
-                            state->enemies[i].alive = false;
-                            state->enemiesAlive--;
-                            state->enemiesDefeated++;
-                        }
                         // Calculate direction to player
                         float dx = state->player.x - state->projectiles[j].x;
                         float dy = state->player.y - state->projectiles[j].y;
@@ -85,32 +65,22 @@ void SpawnEnemyWave(GameState *state) {
         // Determine enemy type based on wave
         if (state->currentWave < 3) {
             state->enemies[i].type = ENEMY_MELEE;
-        } else if (state->currentWave < 6) {
-            state->enemies[i].type = (rand() % 100 < 70) ? ENEMY_MELEE : ENEMY_RANGED;
         } else {
-            int randType = rand() % 100;
-            if (randType < 50) state->enemies[i].type = ENEMY_MELEE;
-            else if (randType < 85) state->enemies[i].type = ENEMY_RANGED;
-            else state->enemies[i].type = ENEMY_TANK;
+            state->enemies[i].type = (rand() % 100 < 70) ? ENEMY_MELEE : ENEMY_RANGED;
         }
 
         // Set stats based on type and wave
         switch (state->enemies[i].type) {
             case ENEMY_MELEE:
-                state->enemies[i].hp = 3 + (state->currentWave / 2);
+                state->enemies[i].hp = 2 + (state->currentWave / 2);
                 state->enemies[i].atk = 1;
                 state->enemies[i].speed = 4;
                 break;
             case ENEMY_RANGED:
-                state->enemies[i].hp = 2;
+                state->enemies[i].hp = 1 + (state->currentWave / 3);
                 state->enemies[i].atk = 2;
-                state->enemies[i].speed = 3;
+                state->enemies[i].speed = 0;
                 state->enemies[i].shootCooldown = 2.0f;
-                break;
-            case ENEMY_TANK:
-                state->enemies[i].hp = 10 + state->currentWave * 2;
-                state->enemies[i].atk = 3;
-                state->enemies[i].speed = 2;
                 break;
         }
 
@@ -125,4 +95,34 @@ void SpawnEnemyWave(GameState *state) {
 
     state->enemiesAlive = enemiesToSpawn;
     state->enemiesDefeated = 0;
+}
+
+void UpdateProjectiles(GameState *state) {
+    for (int i = 0; i < MAX_PROJECTILES; i++) {
+        if (!state->projectiles[i].active) continue;
+
+        // Update position
+        state->projectiles[i].x += state->projectiles[i].dx;
+        state->projectiles[i].y += state->projectiles[i].dy;
+
+        // Check collision with player
+        if (CheckCollisionPointRec((Vector2){state->projectiles[i].x, state->projectiles[i].y},
+                                 state->player) &&
+            state->playerInvincibleTimer <= 0) {
+            state->playerStatus.hp--;
+            state->playerInvincibleTimer = 1.0f;
+            state->projectiles[i].active = false;
+
+            if (state->playerStatus.hp <= 0) {
+                state->finished = true;
+                state->death = 2;
+            }
+        }
+
+        // Check if out of screen
+        if (state->projectiles[i].x < 0 || state->projectiles[i].x > GetScreenWidth() ||
+            state->projectiles[i].y < 0 || state->projectiles[i].y > GetScreenHeight()) {
+            state->projectiles[i].active = false;
+        }
+    }
 }
