@@ -97,41 +97,41 @@
 1749580795 c:\users\loren.desktop-6u1ivbi\desktop\inkolor\score_system.h
 	"game_state.h"
 
-1749578714 source:c:\users\t6cui\downloads\inkolor\inkolor\enemy_system.c
+1749586612 source:c:\users\t6cui\downloads\inkolor\inkolor\enemy_system.c
 	"enemy_system.h"
 	"collision_system.h"
 	"game_state.h"
 	<math.h>
 	<stdlib.h>
 
-1749578714 c:\users\t6cui\downloads\inkolor\inkolor\enemy_system.h
+1749581598 c:\users\t6cui\downloads\inkolor\inkolor\enemy_system.h
 	"game_state.h"
 
-1749578714 c:\users\t6cui\downloads\inkolor\inkolor\game_state.h
+1749586470 c:\users\t6cui\downloads\inkolor\inkolor\game_state.h
 	"raylib.h"
 	<stddef.h>
 
-1749575415 c:\users\t6cui\downloads\inkolor\inkolor\collision_system.h
+1749581598 c:\users\t6cui\downloads\inkolor\inkolor\collision_system.h
 	"raylib.h"
 
-1749578714 source:c:\users\t6cui\downloads\inkolor\inkolor\game_state.c
+1749583885 source:c:\users\t6cui\downloads\inkolor\inkolor\game_state.c
 	"game_state.h"
 	<string.h>
 	<stdio.h>
 
-1749578035 source:c:\users\t6cui\downloads\inkolor\inkolor\input_system.c
+1749581598 source:c:\users\t6cui\downloads\inkolor\inkolor\input_system.c
 	"input_system.h"
 	"game_state.h"
 	"player_system.h"
 	<math.h>
 	<string.h>
 
-1749575415 c:\users\t6cui\downloads\inkolor\inkolor\input_system.h
+1749581598 c:\users\t6cui\downloads\inkolor\inkolor\input_system.h
 	"game_state.h"
 
-1749575415 c:\users\t6cui\downloads\inkolor\inkolor\player_system.h
+1749581598 c:\users\t6cui\downloads\inkolor\inkolor\player_system.h
 
-1749578714 source:c:\users\t6cui\downloads\inkolor\inkolor\main.c
+1749583447 source:c:\users\t6cui\downloads\inkolor\inkolor\main.c
 	"raylib.h"
 	"game_state.h"
 	"input_system.h"
@@ -141,54 +141,53 @@
 	"enemy_system.h"
 	"upgrade_system.h"
 	"ui_system.h"
-	"score_system.h"
 	<stddef.h>
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
 	<time.h>
 
-1749575415 c:\users\t6cui\downloads\inkolor\inkolor\wave_system.h
+1749585744 c:\users\t6cui\downloads\inkolor\inkolor\wave_system.h
 	"game_state.h"
 
-1749575415 c:\users\t6cui\downloads\inkolor\inkolor\upgrade_system.h
+1749581598 c:\users\t6cui\downloads\inkolor\inkolor\upgrade_system.h
 	"game_state.h"
 
-1749575415 c:\users\t6cui\downloads\inkolor\inkolor\ui_system.h
+1749581598 c:\users\t6cui\downloads\inkolor\inkolor\ui_system.h
 	"game_state.h"
 
-1749578714 c:\users\t6cui\downloads\inkolor\inkolor\score_system.h
+1749581598 c:\users\t6cui\downloads\inkolor\inkolor\score_system.h
 	"game_state.h"
 
-1749578714 source:c:\users\t6cui\downloads\inkolor\inkolor\player_system.c
+1749585380 source:c:\users\t6cui\downloads\inkolor\inkolor\player_system.c
 	"player_system.h"
 	"collision_system.h"
 	"game_state.h"
 	<string.h>
 
-1749578714 source:c:\users\t6cui\downloads\inkolor\inkolor\score_system.c
+1749581598 source:c:\users\t6cui\downloads\inkolor\inkolor\score_system.c
 	"score_system.h"
 	"game_state.h"
 	<stdio.h>
 	<string.h>
 	<stdlib.h>
 
-1749578764 source:c:\users\t6cui\downloads\inkolor\inkolor\ui_system.c
+1749584026 source:c:\users\t6cui\downloads\inkolor\inkolor\ui_system.c
 	"ui_system.h"
 	"game_state.h"
 	"raylib.h"
 	<stdio.h>
 
-1749575415 source:c:\users\t6cui\downloads\inkolor\inkolor\upgrade_system.c
+1749581598 source:c:\users\t6cui\downloads\inkolor\inkolor\upgrade_system.c
 	"upgrade_system.h"
 	"game_state.h"
 
-1749575415 source:c:\users\t6cui\downloads\inkolor\inkolor\wave_system.c
+1749586470 source:c:\users\t6cui\downloads\inkolor\inkolor\wave_system.c
 	"wave_system.h"
 	"enemy_system.h"
 	"upgrade_system.h"
 
-1749578035 source:c:\users\t6cui\downloads\inkolor\inkolor\collision_system.c
+1749587034 source:c:\users\t6cui\downloads\inkolor\inkolor\collision_system.c
 	"collision_system.h"
 	"game_state.h"
 	<math.h>

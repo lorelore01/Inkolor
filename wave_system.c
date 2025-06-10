@@ -18,7 +18,7 @@ void HandleEnemyDefeat(GameState *state) {
         state->enemiesDefeated = 0;
         state->enemiesAlive = 0;
 
-        if (state->currentWave > 10) {
+        if (state->currentWave == 10) {
             state->finished = true;
             state->death = 1;
             return;

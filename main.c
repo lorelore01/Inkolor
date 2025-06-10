@@ -7,7 +7,6 @@
 #include "enemy_system.h"
 #include "upgrade_system.h"
 #include "ui_system.h"
-#include "score_system.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
@@ -23,8 +22,6 @@ int main() {
 
     GameState state;
     InitializeGameState(&state, screenWidth, screenHeight);
-
-    LoadHighScores(&state);
 
     while (!WindowShouldClose()) {
         float delta = GetFrameTime();
@@ -105,12 +102,6 @@ int main() {
 
         EndDrawing();
     }
-
-    // Save scores before closing
-    if (state.finished && !state.nameInputActive && strlen(state.playerName) > 0) {
-        SaveHighScore(state.playerName, state.currentWave);
-    }
-
     CloseWindow();
     return 0;
 }

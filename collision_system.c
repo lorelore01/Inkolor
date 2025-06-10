@@ -93,7 +93,7 @@ void CheckAttackEnemyCollisions(GameState *state) {
             CheckCollisionRecs(state->attack, state->enemies[i].hitbox)) {
 
             // Knockback vertical ao atacar de cima
-            if (state->attackDirection == 'K') state->vel_y = -12.5f;
+            if (state->attackDirection == 'K') state->vel_y = -18;
 
             // Aplicar dano
             state->enemies[i].hp -= state->playerStatus.atk;

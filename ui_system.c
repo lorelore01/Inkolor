@@ -28,15 +28,20 @@ void DrawGameUI(const GameState *state) {
     for (int i = 0; i < MAX_ENEMIES; i++) {
         if (!state->enemies[i].alive) continue;
 
-        int enemyHpMax = 3;
-        if (state->enemies[i].type == ENEMY_TANK) enemyHpMax = 10;
+        float hpPercent = (float)state->enemies[i].hp / (state->enemies[i].type == ENEMY_MELEE ?
+                          (2 + (state->currentWave / 2)) :
+                          (1 + (state->currentWave / 3)));
 
-        int enemyBarWidth = (int)(state->enemies[i].hitbox.width * ((float)state->enemies[i].hp / enemyHpMax));
-        DrawRectangle((int)state->enemies[i].hitbox.x, (int)(state->enemies[i].hitbox.y + state->enemies[i].hitbox.height + 5),
+        int enemyBarWidth = (int)(state->enemies[i].hitbox.width * hpPercent);
+
+        DrawRectangle((int)state->enemies[i].hitbox.x,
+                     (int)(state->enemies[i].hitbox.y + state->enemies[i].hitbox.height + 5),
                      enemyBarWidth, 5, RED);
-        DrawRectangleLines((int)state->enemies[i].hitbox.x, (int)(state->enemies[i].hitbox.y + state->enemies[i].hitbox.height + 5),
+        DrawRectangleLines((int)state->enemies[i].hitbox.x,
+                          (int)(state->enemies[i].hitbox.y + state->enemies[i].hitbox.height + 5),
                           (int)state->enemies[i].hitbox.width, 5, BLACK);
     }
+
 
     // Cooldown bars
     int hudX = 50;
@@ -74,17 +79,6 @@ void DrawGameUI(const GameState *state) {
 void DrawMenuScreen(const GameState *state, int screenWidth, int screenHeight) {
     DrawText("Inkolor: Platform Fighter", screenWidth/3 - 50, screenHeight/4, 50, WHITE);
     DrawText("Aperte [Enter] para iniciar", screenWidth/3, screenHeight/2, 40, WHITE);
-
-    // Show high scores
-    if (state->scoreCount > 0) {
-        DrawText("Melhores Pontuacoes:", screenWidth/3, screenHeight/2 + 100, 30, GOLD);
-        for (int i = 0; i < state->scoreCount && i < 5; i++) {
-            DrawText(TextFormat("%s: Wave %d",
-                    state->highScores[i].name,
-                    state->highScores[i].wave),
-                    screenWidth/3, screenHeight/2 + 140 + i * 30, 25, WHITE);
-        }
-    }
 }
 
 void DrawGameOverScreen(const GameState *state, int screenWidth, int screenHeight) {
@@ -94,27 +88,9 @@ void DrawGameOverScreen(const GameState *state, int screenWidth, int screenHeigh
     else if (state->death == 2) {
         DrawText("Voce Perdeu :(", screenWidth/3, screenHeight/3, 50, RED);
     }
-
     DrawText(TextFormat("Wave Alcancada: %d", state->currentWave),
              screenWidth/3, screenHeight/2, 40, WHITE);
-
-    if (state->nameInputActive) {
-        DrawText("Digite seu nome:", screenWidth/3, screenHeight/2 + 100, 30, WHITE);
-        DrawText(state->playerName, screenWidth/3, screenHeight/2 + 140, 30, YELLOW);
-        DrawText("Aperte [Enter] quando terminar", screenWidth/3, screenHeight/2 + 180, 25, WHITE);
-    }
-    else {
-        DrawText("Aperte [Enter] para retornar ao menu", screenWidth/3, screenHeight/2 + 100, 30, WHITE);
-
-        // Show high scores
-        DrawText("High Scores:", screenWidth/3, screenHeight/2 + 150, 30, GOLD);
-        for (int i = 0; i < state->scoreCount && i < 5; i++) {
-            DrawText(TextFormat("%s: Wave %d",
-                    state->highScores[i].name,
-                    state->highScores[i].wave),
-                    screenWidth/3, screenHeight/2 + 190 + i * 30, 25, WHITE);
-        }
-    }
+    DrawText("Aperte [Enter] para reiniciar", screenWidth/3, screenHeight/2 + 50, 40, WHITE);
 }
 
 void DrawUpgradeScreen(const GameState *state, int screenWidth, int screenHeight) {

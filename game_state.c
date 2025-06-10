@@ -31,7 +31,7 @@ void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
     state->attackDirection = ' ';
 
     // Parry
-    state->parryDuration = 0.5f;
+    state->parryDuration = 0.75f;
     state->parryTimer = 0;
     state->isParrying = false;
     state->parryCooldown = 3.0f;
@@ -94,14 +94,8 @@ void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
     // Player name
     strcpy(state->playerName, "");
     state->nameInputActive = false;
-
-    // High scores
-    state->scoreCount = 0;
-    for (int i = 0; i < MAX_SCORES; i++) {
-        strcpy(state->highScores[i].name, "");
-        state->highScores[i].wave = 0;
-    }
 }
+
 
 void UpdateItems(GameState *state, float delta) {
     for (int i = 0; i < MAX_ITEMS; i++) {

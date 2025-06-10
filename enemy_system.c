@@ -77,7 +77,7 @@ void SpawnEnemyWave(GameState *state) {
                 break;
             case ENEMY_RANGED:
                 state->enemies[i].hp = 1 + (state->currentWave / 3);
-                state->enemies[i].atk = 2;
+                state->enemies[i].atk = 1;
                 state->enemies[i].speed = 0;
                 state->enemies[i].shootCooldown = 2.0f;
                 break;
@@ -109,9 +109,7 @@ void UpdateProjectiles(GameState *state) {
         state->projectiles[i].x += state->projectiles[i].dx;
         state->projectiles[i].y += state->projectiles[i].dy;
 
-        if (CheckCollisionPointRec((Vector2){state->projectiles[i].x, state->projectiles[i].y},
-                                   state->player) &&
-            state->playerInvincibleTimer <= 0) {
+        if (CheckCollisionPointRec((Vector2){state->projectiles[i].x, state->projectiles[i].y}, state->player) && state->playerInvincibleTimer <= 0) {
             state->playerStatus.hp--;
             state->playerInvincibleTimer = 1.0f;
             state->projectiles[i].active = false;
@@ -126,10 +124,12 @@ void UpdateProjectiles(GameState *state) {
 
         if (state->projectiles[i].deflected) {
             for (int j = 0; j < MAX_ENEMIES; j++) {
-                if (state->enemies[j].alive &&
-                    CheckCollisionPointRec((Vector2){state->projectiles[i].x, state->projectiles[i].y},
-                                           state->enemies[j].hitbox)) {
-                    state->enemies[j].hp -= 1;
+                if (state->enemies[j].alive && CheckCollisionPointRec((Vector2){state->projectiles[i].x, state->projectiles[i].y}, state->enemies[j].hitbox)) {
+                    state->enemies[j].hp -= state->playerStatus.atk;
+                    if (state->enemies[j].hp <= 0){
+                        state->enemies[j].alive = 0;
+                        state->enemiesDefeated++;
+                    }
                     state->projectiles[i].active = false;
                     break;
                 }
@@ -142,4 +142,3 @@ void UpdateProjectiles(GameState *state) {
         }
     }
 }
-

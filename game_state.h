@@ -4,9 +4,8 @@
 #include "raylib.h"
 #include <stddef.h>
 
-#define MAX_ENEMIES 10
+#define MAX_ENEMIES 15
 #define MAX_PROJECTILES 50
-#define MAX_SCORES 10
 #define MAX_ITEMS 10
 
 // Forward declaration
@@ -63,11 +62,6 @@ typedef struct {
     const char* name;
     void (*apply)(GameState*);
 } Upgrade;
-
-typedef struct {
-    char name[50];
-    int wave;
-} HighScore;
 
 struct GameState {
     // Player
@@ -141,10 +135,6 @@ struct GameState {
     // Player name
     char playerName[50];
     bool nameInputActive;
-
-    // High scores
-    HighScore highScores[MAX_SCORES];
-    int scoreCount;
 };
 
 void UpdateItems(GameState *state, float delta);
