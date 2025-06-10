@@ -14,11 +14,9 @@ typedef struct GameState GameState;
 typedef enum {
     ENEMY_MELEE,
     ENEMY_RANGED,
-    ENEMY_TANK
 } EnemyType;
 
 typedef enum {
-    ITEM_NONE,
     ITEM_HEALTH,
     ITEM_SPEED
 } ItemType;

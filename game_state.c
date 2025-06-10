@@ -60,7 +60,6 @@ void InitializeGameState(GameState *state, int screenWidth, int screenHeight) {
     // Items
     for (int i = 0; i < MAX_ITEMS; i++) {
         state->items[i].active = false;
-        state->items[i].type = ITEM_NONE;
     }
 
 
