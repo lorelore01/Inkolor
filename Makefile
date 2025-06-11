@@ -17,9 +17,11 @@ all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS)
+	
 
 %.o: %.c
 	$(CC) -c $< -o $@ $(CFLAGS)
-
+	cp /mingw64/bin/libraylib.dll .
 clean:
 	rm -f *.o $(TARGET)
+
