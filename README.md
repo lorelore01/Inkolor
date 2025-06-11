@@ -13,7 +13,8 @@ Após compilar (veja abaixo), o executável estará em:
 
 ```bash
 build/linux/inkolor
-
+```
+```bash
 ./build/linux/inkolor
 
 ```
@@ -23,7 +24,8 @@ O executável estará em:
 
 ```bash
 build/windows/inkolor.exe
-
+```
+```bash
 inkolor.exe
 ```
 Você pode dar dois cliques para rodar ou executar no terminal:
@@ -31,3 +33,8 @@ Você pode dar dois cliques para rodar ou executar no terminal:
 ```bash 
 
 inkolor.exe
+
+
+```
+
+### Existe também um executável na pasta principal!
