@@ -1,16 +1,33 @@
 # 🎨 Inkolor
 
-**Inkolor** é um jogo 2D feito com [Raylib](https://www.raylib.com/), totalmente em C. O jogo utiliza formas simples como retângulos para representar os elementos na tela.
+**Inkolor** é um jogo 2D feito em **C** com a biblioteca [Raylib](https://www.raylib.com/).  
+Inspirado por estilos minimalistas e cartunescos, o jogo utiliza formas geométricas simples (como retângulos) para representar personagens, inimigos e elementos da interface.
 
 ---
 
-## 🕹️ Executável
+## 📦 Executáveis
 
-Um executável já está disponível na raiz do projeto:  
-**`inkolor` (Linux)** ou **`inkolor.exe` (Windows)**
+### 🔹 Linux
 
-Basta dar dois cliques ou executar no terminal:
+Após compilar (veja abaixo), o executável estará em:
 
 ```bash
-./inkolor
+build/linux/inkolor
 
+./build/linux/inkolor
+
+```
+### 🔸 Windows
+
+O executável estará em:
+
+```bash
+build/windows/inkolor.exe
+
+inkolor.exe
+```
+Você pode dar dois cliques para rodar ou executar no terminal:
+
+```bash 
+
+inkolor.exe
