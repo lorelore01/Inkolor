@@ -1,27 +1,41 @@
-# Compilador
+# Detecta o sistema operacional
+ifeq ($(OS),Windows_NT)
+    PLATFORM = windows
+    TARGET = build/windows/inkolor.exe
+    RAYLIB_INCLUDE = C:/raylib/include
+    RAYLIB_LIB = C:/raylib/lib
+    LDFLAGS = -L"$(RAYLIB_LIB)" -lraylib -lopengl32 -lgdi32 -lwinmm
+else
+    PLATFORM = linux
+    TARGET = build/linux/inkolor
+    RAYLIB_INCLUDE = /path/to/raylib/include
+    RAYLIB_LIB = /path/to/raylib/lib
+    LDFLAGS = -L$(RAYLIB_LIB) -lraylib -lm -ldl -lpthread -lGL -lrt -lX11
+endif
+
+# Compilador e flags
 CC = gcc
+CFLAGS = -O2 -Wall -std=c99 -I$(RAYLIB_INCLUDE)
 
-# Flags de compilação
-CFLAGS = -O2 -Wall -std=c99 -IC:/raylib/include
-
-# Flags de linkagem
-LDFLAGS = -LC:/raylib/lib -lraylib -lopengl32 -lgdi32 -lwinmm
-
-# Fontes e alvo
+# Fontes e objetos
 SOURCES = main.c collision_system.c enemy_system.c game_state.c input_system.c player_system.c ui_system.c upgrade_system.c wave_system.c
-OBJECTS = $(SOURCES:.c=.o)
-TARGET = inkolor.exe
+OBJDIR = build/$(PLATFORM)/obj
+OBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(SOURCES))
 
 # Regra padrão
 all: $(TARGET)
 
+# Compilação final
 $(TARGET): $(OBJECTS)
+	@mkdir -p $(dir $@)
 	$(CC) -o $@ $^ $(LDFLAGS)
-	
 
-%.o: %.c
+# Compilação dos .c -> .o
+$(OBJDIR)/%.o: %.c
+	@mkdir -p $(dir $@)
 	$(CC) -c $< -o $@ $(CFLAGS)
-	cp /mingw64/bin/libraylib.dll .
+
+# Limpeza
 clean:
-	rm -f *.o $(TARGET)
+	rm -rf build/linux build/windows
 

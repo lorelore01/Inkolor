@@ -1,0 +1,8 @@
+
+CC = gc
+
+# Flags de com
+CFLAGS = -O2 -Wall -std=c99 -IC:/raylib/includ
+# Flags de linkagem
+LDFLAGS = -LC:/raylib/lib -lraylib -lopengl32 -lgdi32 -l# Fontes e alvo
+SOURCES = main.c collision_system.c enemy_system.c game_sta
